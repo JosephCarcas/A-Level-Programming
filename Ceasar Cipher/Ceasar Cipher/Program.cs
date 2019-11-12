@@ -11,25 +11,29 @@ namespace Ceasar_Cipher
         static void Main(string[] args)
         {
             string inputMessage = "";
-            int inputKey;
+            int inputKey1;
+            int inputKey2;
 
             Console.Write("Enter message to encrypt: ");
             inputMessage = Console.ReadLine();
 
-            Console.Write("Enter cipher key: ");
-            int.TryParse(Console.ReadLine(), out inputKey);
+            Console.Write("Enter first cipher key: ");
+            int.TryParse(Console.ReadLine(), out inputKey1);
+
+            Console.Write("Enter second cipher key: ");
+            int.TryParse(Console.ReadLine(), out inputKey2);
 
             Console.Clear();
 
-            string message = Encryption(inputMessage, inputKey);
+            string message = Encryption(inputMessage, inputKey1, inputKey2);
             Console.WriteLine("Encrypted Message: {0}", message);
-            Console.WriteLine("Decrypted Message: {0}", Decryption(message, inputKey));
+            Console.WriteLine("Decrypted Message: {0}", Decryption(message, inputKey1, inputKey2));
 
             Console.ReadLine();
 
         }
 
-        static string Encryption(string plainText, int shiftKey)
+        static string Encryption(string plainText, int shiftKey1, int shiftKey2)
         {
             char[] TempChars = plainText.ToCharArray();
 
@@ -39,26 +43,48 @@ namespace Ceasar_Cipher
 
                 if (char.IsUpper(TempChars[i]) == true)
                 {
-                    asciiValue = asciiValue - 65;
+                    for (int chooseKey = 0; chooseKey < TempChars.Length; chooseKey++)
+                    {
+                        asciiValue = asciiValue - 65;
 
-                    asciiValue = asciiValue + shiftKey;
+                        if ((chooseKey % 2) == 0)
+                        {
+                            asciiValue = asciiValue + shiftKey1;
+                        }
+                        else
+                        {
+                            asciiValue = asciiValue + shiftKey2;
+                        }
 
-                    asciiValue = asciiValue % 26;
+                        asciiValue = asciiValue % 26;
 
-                    asciiValue = asciiValue + 65;
+                        asciiValue = asciiValue + 65;
+                    }
+                    
                 }
 
                 if (char.IsLower(TempChars[i]) == true)
                 {
-                    asciiValue = asciiValue - 97;
+                    for (int chooseKey = 0; chooseKey < TempChars.Length; chooseKey++)
+                    {
+                        asciiValue = asciiValue - 97;
 
-                    asciiValue = asciiValue + shiftKey;
+                        if ((chooseKey % 2) == 0)
+                        {
+                            asciiValue = asciiValue + shiftKey1;
+                        }
+                        else
+                        {
+                            asciiValue = asciiValue + shiftKey2;
+                        }
 
-                    asciiValue = asciiValue + 26; //prevents negative numbers by adding a multiple of the mod.
+                        asciiValue = asciiValue + 26; //prevents negative numbers by adding a multiple of the mod.
 
-                    asciiValue = asciiValue % 26;
+                        asciiValue = asciiValue % 26;
 
-                    asciiValue = asciiValue + 97;
+                        asciiValue = asciiValue + 97;
+                    }
+
                 }
 
                 TempChars[i] = (char)asciiValue;
@@ -67,7 +93,7 @@ namespace Ceasar_Cipher
             return new string(TempChars);
         }
 
-        static string Decryption(string cipherText, int shiftKey)
+        static string Decryption(string cipherText, int shiftKey1, int shiftKey2)
         {
             char[] TempChars = cipherText.ToCharArray();
 
@@ -77,27 +103,49 @@ namespace Ceasar_Cipher
 
                 if (char.IsUpper(TempChars[i]) == true)
                 {
-                    asciiValue = asciiValue - 65;
+                    for (int chooseKey = 0; chooseKey < TempChars.Length; chooseKey++)
+                    {
+                        asciiValue = asciiValue - 65;
 
-                    asciiValue = asciiValue - shiftKey;
-                    asciiValue = asciiValue + 26; //prevents negative numbers by adding a multiple of the mod.
+                        if ((chooseKey % 2) == 0)
+                        {
+                            asciiValue = asciiValue + shiftKey1;
+                        }
+                        else
+                        {
+                            asciiValue = asciiValue + shiftKey2;
+                        }
+                        asciiValue = asciiValue + 26; //prevents negative numbers by adding a multiple of the mod.
 
-                    asciiValue = asciiValue % 26;
+                        asciiValue = asciiValue % 26;
 
-                    asciiValue = asciiValue + 65;
+                        asciiValue = asciiValue + 65;
+                    }
+
                 }
 
                 if (char.IsLower(TempChars[i]) == true)
                 {
-                    asciiValue = asciiValue - 97;
+                    for (int chooseKey = 0; chooseKey < TempChars.Length; chooseKey++)
+                    {
+                        asciiValue = asciiValue - 97;
 
-                    asciiValue = asciiValue - shiftKey;
+                        if ((chooseKey % 2) == 0)
+                        {
+                            asciiValue = asciiValue + shiftKey1;
+                        }
+                        else
+                        {
+                            asciiValue = asciiValue + shiftKey2;
+                        }
 
-                    asciiValue = asciiValue + 26; //prevents negative numbers by adding a multiple of the mod.
+                        asciiValue = asciiValue + 26; //prevents negative numbers by adding a multiple of the mod.
 
-                    asciiValue = asciiValue % 26;
+                        asciiValue = asciiValue % 26;
 
-                    asciiValue = asciiValue + 97;
+                        asciiValue = asciiValue + 97;
+                    }
+
                 }
 
                 TempChars[i] = (char)asciiValue;
