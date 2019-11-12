@@ -10,24 +10,100 @@ namespace Ceasar_Cipher
     {
         static void Main(string[] args)
         {
-            string message = Encryption("Cheese Please!", 15);
-            Console.WriteLine(message);
-            Console.WriteLine(Decryption(message, 15));
+            string inputMessage = "";
+            int inputKey;
+
+            Console.Write("Enter message to encrypt: ");
+            inputMessage = Console.ReadLine();
+
+            Console.Write("Enter cipher key: ");
+            int.TryParse(Console.ReadLine(), out inputKey);
+
+            Console.Clear();
+
+            string message = Encryption(inputMessage, inputKey);
+            Console.WriteLine("Encrypted Message: {0}", message);
+            Console.WriteLine("Decrypted Message: {0}", Decryption(message, inputKey));
+
+            Console.ReadLine();
 
         }
 
         static string Encryption(string plainText, int shiftKey)
         {
-            string cipherText = "";
+            char[] TempChars = plainText.ToCharArray();
 
-            return cipherText;
+            for (int i = 0; i < TempChars.Length; i++)
+            {
+                int asciiValue = (int)TempChars[i];
+
+                if (char.IsUpper(TempChars[i]) == true)
+                {
+                    asciiValue = asciiValue - 65;
+
+                    asciiValue = asciiValue + shiftKey;
+
+                    asciiValue = asciiValue % 26;
+
+                    asciiValue = asciiValue + 65;
+                }
+
+                if (char.IsLower(TempChars[i]) == true)
+                {
+                    asciiValue = asciiValue - 97;
+
+                    asciiValue = asciiValue + shiftKey;
+
+                    asciiValue = asciiValue + 26; //prevents negative numbers by adding a multiple of the mod.
+
+                    asciiValue = asciiValue % 26;
+
+                    asciiValue = asciiValue + 97;
+                }
+
+                TempChars[i] = (char)asciiValue;
+            }
+
+            return new string(TempChars);
         }
 
         static string Decryption(string cipherText, int shiftKey)
         {
-            string plainText = "";
+            char[] TempChars = cipherText.ToCharArray();
 
-            return plainText;
+            for (int i = 0; i < TempChars.Length; i++)
+            {
+                int asciiValue = (int)TempChars[i];
+
+                if (char.IsUpper(TempChars[i]) == true)
+                {
+                    asciiValue = asciiValue - 65;
+
+                    asciiValue = asciiValue - shiftKey;
+                    asciiValue = asciiValue + 26; //prevents negative numbers by adding a multiple of the mod.
+
+                    asciiValue = asciiValue % 26;
+
+                    asciiValue = asciiValue + 65;
+                }
+
+                if (char.IsLower(TempChars[i]) == true)
+                {
+                    asciiValue = asciiValue - 97;
+
+                    asciiValue = asciiValue - shiftKey;
+
+                    asciiValue = asciiValue + 26; //prevents negative numbers by adding a multiple of the mod.
+
+                    asciiValue = asciiValue % 26;
+
+                    asciiValue = asciiValue + 97;
+                }
+
+                TempChars[i] = (char)asciiValue;
+            }
+
+            return new string(TempChars);
         }
     }
 }
